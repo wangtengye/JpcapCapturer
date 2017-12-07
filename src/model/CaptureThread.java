@@ -2,8 +2,7 @@ package model;
 
 import jpcap.JpcapCaptor;
 import jpcap.PacketReceiver;
-import jpcap.packet.IPPacket;
-import jpcap.packet.Packet;
+import jpcap.packet.*;
 
 import javax.swing.table.DefaultTableModel;
 import java.io.IOException;
@@ -20,36 +19,60 @@ public class CaptureThread extends Thread {
         }
     }
 
-    public void setTableModel(DefaultTableModel defaultTableModel) {
-        this.tableModel = defaultTableModel;
-    }
-
-    @Override
-    public void run() {
-        while (true) {
-            captor.processPacket(-1, new Receiver());
-        }
-    }
-
     public static void main(String[] args) {
         new CaptureThread().start();
     }
 
-    class Receiver implements PacketReceiver {
+    public void setTableModel(DefaultTableModel defaultTableModel) {
+        this.tableModel = defaultTableModel;
+    }
 
+
+    @Override
+    public void run() {
+        if (Capturer.openFromFile) {
+            Capturer.packetList.forEach(this::dealPacket);
+            Capturer.openFromFile = false;
+        } else {
+            while (true) {
+                captor.processPacket(-1, new Receiver());
+            }
+        }
+    }
+
+    void dealPacket(Packet packet) {
+        Capturer.total++;
+        System.out.println(Capturer.total + "<-->" + packet);
+        String src = "", dst = "", type = "other", length = packet.len + "";
+        if (packet instanceof ARPPacket) {
+            ARPPacket arpPacket = (ARPPacket) packet;
+            src = arpPacket.getSenderProtocolAddress().toString();
+            dst = arpPacket.getTargetProtocolAddress().toString();
+            type = "ARP";
+        } else if (packet instanceof IPPacket) {
+            IPPacket ipPacket = (IPPacket) packet;
+            src = ipPacket.src_ip.toString();
+            dst = ipPacket.dst_ip.toString();
+            if (packet instanceof TCPPacket) {
+                type = "TCP";
+            } else if (packet instanceof UDPPacket) {
+
+                type = "UDP";
+            } else if (packet instanceof ICMPPacket) {
+                type = "ICMP";
+            }
+        }
+        tableModel.addRow(new String[]{Capturer.total + "", src.substring(1), dst.substring(1), type, length});
+
+    }
+
+    class Receiver implements PacketReceiver {
         @Override
         public void receivePacket(Packet packet) {
-            tableModel.addRow(new String[]{packet.toString(), "3"});
-
-            System.out.println("-------------");
-            if (packet instanceof IPPacket) {
-
-                System.out.println(((IPPacket) packet).src_ip);
-                System.out.println(((IPPacket) packet).dst_ip);
-
-            } else
-                System.out.println(packet);
+            Capturer.packetList.add(packet);
+            dealPacket(packet);
         }
+
     }
 }
 
