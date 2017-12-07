@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Capturer {
-    static NetworkInterface[] devices = JpcapCaptor.getDeviceList();
     public static int selectedIndex = 3;
+    public static boolean openFromFile = false;
+    static NetworkInterface[] devices = JpcapCaptor.getDeviceList();
     static int total = 0;
     static List<Packet> packetList = new ArrayList<>();
-    public static boolean openFromFile = false;
 
     public static void init() {
         total = 0;

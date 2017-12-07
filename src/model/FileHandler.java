@@ -16,10 +16,10 @@ public class FileHandler {
         System.out.println("文件写入结束");
     }
 
-    public static void openFile(File file){
+    public static void openFile(File file) {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))) {
             System.out.println("文件读取中");
-            Capturer.packetList=(List<Packet>)objectInputStream.readObject();
+            Capturer.packetList = (List<Packet>) objectInputStream.readObject();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

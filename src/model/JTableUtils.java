@@ -9,7 +9,7 @@ public class JTableUtils {
             defaultTableModel.addColumn(name);
     }
 
-    public static void setContent(DefaultTableModel defaultTableModel, Vector<Vector<String >> vector){
+    public static void setContent(DefaultTableModel defaultTableModel, Vector<Vector<String>> vector) {
         System.out.println(vector);
         vector.forEach(defaultTableModel::addRow);
     }
