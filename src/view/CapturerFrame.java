@@ -13,10 +13,10 @@ public class CapturerFrame extends JFrame implements ActionListener {
 
     JMenu captureMenu;
     JMenu fileMenu;
-    JMenu statMenu;
     JMenu chartMenu;
 
     JMenuItem interfaceItem;
+    JMenuItem configItem;
     JMenuItem startItem;
     JMenuItem stopItem;
     JMenuItem openFileItem;
@@ -30,10 +30,10 @@ public class CapturerFrame extends JFrame implements ActionListener {
         bar = new JMenuBar();
         captureMenu = new JMenu("捕获");
         fileMenu = new JMenu("文件");
-        statMenu = new JMenu("统计");
         chartMenu = new JMenu("图表");
 
         interfaceItem = new JMenuItem("查看接口");
+        configItem = new JMenuItem("配置");
         startItem = new JMenuItem("开始");
         stopItem = new JMenuItem("停止");
         openFileItem = new JMenuItem("打开");
@@ -41,6 +41,7 @@ public class CapturerFrame extends JFrame implements ActionListener {
         chartItem = new JMenuItem("查看图表");
 
         captureMenu.add(interfaceItem);
+        captureMenu.add(configItem);
         captureMenu.add(startItem);
         captureMenu.add(stopItem);
         fileMenu.add(openFileItem);
@@ -49,7 +50,6 @@ public class CapturerFrame extends JFrame implements ActionListener {
 
         bar.add(captureMenu);
         bar.add(fileMenu);
-        bar.add(statMenu);
         bar.add(chartMenu);
         setJMenuBar(bar);
 
@@ -59,6 +59,7 @@ public class CapturerFrame extends JFrame implements ActionListener {
         saveFileItem.addActionListener(this);
         openFileItem.addActionListener(this);
         chartItem.addActionListener(this);
+        configItem.addActionListener(this);
 
         setBounds(400, 100, 850, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -103,6 +104,8 @@ public class CapturerFrame extends JFrame implements ActionListener {
 
         } else if (e.getSource() == chartItem) {
             new ChartFrame();
+        }else if(e.getSource()==configItem){
+            new ConfigFrame();
         }
     }
 }

@@ -1,5 +1,5 @@
 package model.packetAnalyzer;
 
 public class UDPAnalyzer {
-    public static int total = 30;
+    public static int total = 0;
 }

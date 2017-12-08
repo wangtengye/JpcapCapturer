@@ -18,9 +18,10 @@ public class ChartFrame extends JFrame {
     public ChartFrame() {
         super("图表分析");
 
+        getContentPane().add(getTablePanel(), BorderLayout.NORTH);
         getContentPane().add(getPiePanel(), BorderLayout.WEST);
         getContentPane().add(getBarPanel(), BorderLayout.CENTER);
-        setBounds(300, 100, 1000, 550);
+        setBounds(300, 100, 800, 550);
 
         setVisible(true);
 
@@ -30,6 +31,15 @@ public class ChartFrame extends JFrame {
 
     public static void main(String[] args) {
         new ChartFrame();
+    }
+
+    Container getTablePanel() {
+        Object[] columnNames = {"ipv4", "ipv6", "tcp", "udp", "arp"};
+        Object[][] rowData={{IPAnalyzer.totalOfIPv4,IPAnalyzer.totalOfIPv6,TCPAnalyzer.total,UDPAnalyzer.total,ARPAnalyzer.total}};
+        JTable table = new JTable(rowData,columnNames);
+        JScrollPane scrollPane =new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(0,60));
+        return scrollPane;
     }
 
     Container getPiePanel() {

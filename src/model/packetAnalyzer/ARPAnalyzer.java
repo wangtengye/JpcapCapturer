@@ -1,5 +1,5 @@
 package model.packetAnalyzer;
 
 public class ARPAnalyzer {
-    public static int total = 20;
+    public static int total = 0;
 }
