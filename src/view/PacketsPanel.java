@@ -1,29 +1,63 @@
 package view;
 
+import model.Capturer;
 import model.JTableUtils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PacketsPanel extends JPanel {
     DefaultTableModel packetModel = null;
 
     public PacketsPanel() {
         super(new BorderLayout());
-        packetModel = new DefaultTableModel();
+
+        packetModel = new DefaultTableModel() {
+            @Override
+            public Class<?> getColumnClass(int column) {
+                if ((column >= 0) && (column < getColumnCount()))
+                    if (getRowCount() > 0)
+                        return getValueAt(0, column).getClass();
+                return Object.class;
+            }
+        };
         JTable packetTable = new JTable(packetModel);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(packetModel);
+        packetTable.setRowSorter(sorter);
         JTableUtils.setColumnName(packetModel, new String[]{"no", "source", "destination", " type", "length"});
         JScrollPane pane = new JScrollPane(packetTable);
         add(pane);
 
+        JPanel filterPanel = new JPanel();
+        JTextField filterText = new JTextField(57);
+        JButton button = new JButton("输入过滤条件过滤");
+        filterPanel.add(filterText);
+        filterPanel.add(button, BorderLayout.EAST);
+        button.addActionListener(e -> {
+            sorter.setRowFilter(RowFilter.regexFilter(filterText.getText()));
+        });
+
+        add(filterPanel, BorderLayout.NORTH);
         packetTable.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
                 packetTable.scrollRectToVisible(packetTable.getCellRect(packetTable.getRowCount() - 1, 0, true));
             }
         });
+
+        packetTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                Capturer.selectedPacket = Capturer.packetList.get(packetTable.getSelectedRow());
+                System.out.println(Capturer.selectedPacket);
+            }
+        });
+        setPreferredSize(new Dimension(0, 50));
 
     }
 

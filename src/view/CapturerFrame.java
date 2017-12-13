@@ -5,6 +5,9 @@ import model.Capturer;
 import model.FileHandler;
 
 import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -27,6 +30,7 @@ public class CapturerFrame extends JFrame implements ActionListener {
 
     public CapturerFrame() {
         super("抓包工具");
+        //getContentPane().setLayout(new BorderLayout());
         bar = new JMenuBar();
         captureMenu = new JMenu("捕获");
         fileMenu = new JMenu("文件");
@@ -60,6 +64,23 @@ public class CapturerFrame extends JFrame implements ActionListener {
         openFileItem.addActionListener(this);
         chartItem.addActionListener(this);
         configItem.addActionListener(this);
+        fileMenu.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                saveFileItem.setEnabled(runningThread != null && !runningThread.isAlive());
+            }
+
+            @Override
+            public void menuDeselected(MenuEvent e) {
+
+            }
+
+            @Override
+            public void menuCanceled(MenuEvent e) {
+
+            }
+        });
+
 
         setBounds(400, 100, 850, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -81,6 +102,7 @@ public class CapturerFrame extends JFrame implements ActionListener {
             getContentPane().removeAll();
             PacketsPanel packetsPanel = new PacketsPanel();
             getContentPane().add(packetsPanel);
+            getContentPane().add(new ExtendPanel(), BorderLayout.SOUTH);
             getContentPane().repaint();
             getContentPane().validate();
 
@@ -104,7 +126,7 @@ public class CapturerFrame extends JFrame implements ActionListener {
 
         } else if (e.getSource() == chartItem) {
             new ChartFrame();
-        }else if(e.getSource()==configItem){
+        } else if (e.getSource() == configItem) {
             new ConfigFrame();
         }
     }

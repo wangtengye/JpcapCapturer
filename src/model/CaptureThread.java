@@ -48,7 +48,8 @@ public class CaptureThread extends Thread {
     void dealPacket(Packet packet) {
         Capturer.total++;
         System.out.println(Capturer.total + "<-->" + packet);
-        String src = "", dst = "", type = "other", length = packet.len + "";
+        String src = "", dst = "", type = "other";
+        int length = packet.len;
         if (packet instanceof ARPPacket) {
             ARPPacket arpPacket = (ARPPacket) packet;
             src = arpPacket.getSenderProtocolAddress().toString();
@@ -69,7 +70,7 @@ public class CaptureThread extends Thread {
             } else
                 type = "ICMP";
         }
-        tableModel.addRow(new String[]{Capturer.total + "", src.substring(1), dst.substring(1), type, length});
+        tableModel.addRow(new Object[]{Capturer.total, src.substring(1), dst.substring(1), type, length});
 
     }
 
