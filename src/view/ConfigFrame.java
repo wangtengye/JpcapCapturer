@@ -18,7 +18,7 @@ public class ConfigFrame extends JFrame {
 
         String[] devices = new String[Capturer.devices.length];
         for (int i = 0; i < Capturer.devices.length; i++) {
-            devices[i] = Capturer.devices[i].description;
+            devices[i] = Capturer.devices[i].description + " :" + (i + 1);
         }
 
         JComboBox<String> deviceBox = new JComboBox<>(devices);
