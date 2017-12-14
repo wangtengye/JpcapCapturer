@@ -57,7 +57,7 @@ public class PacketsPanel extends JPanel {
                 System.out.println(Capturer.selectedPacket);
             }
         });
-        setPreferredSize(new Dimension(0, 50));
+        setPreferredSize(new Dimension(0, 250));
 
     }
 

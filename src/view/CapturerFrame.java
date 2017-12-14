@@ -101,8 +101,8 @@ public class CapturerFrame extends JFrame implements ActionListener {
                 runningThread.stop();
             getContentPane().removeAll();
             PacketsPanel packetsPanel = new PacketsPanel();
-            getContentPane().add(packetsPanel);
-            getContentPane().add(new ExtendPanel(), BorderLayout.SOUTH);
+            getContentPane().add(packetsPanel,BorderLayout.NORTH);
+            getContentPane().add(new ExtendPanel(), BorderLayout.CENTER);
             getContentPane().repaint();
             getContentPane().validate();
 
