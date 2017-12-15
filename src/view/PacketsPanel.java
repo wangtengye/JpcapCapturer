@@ -1,5 +1,6 @@
 package view;
 
+import jpcap.packet.Packet;
 import model.Capturer;
 import model.JTableUtils;
 
@@ -41,7 +42,7 @@ public class PacketsPanel extends JPanel {
         filterPanel.add(filterText);
         filterPanel.add(button, BorderLayout.EAST);
         button.addActionListener(e -> {
-            sorter.setRowFilter(RowFilter.regexFilter(filterText.getText()));
+            sorter.setRowFilter(RowFilter.regexFilter(filterText.getText().toUpperCase()));
         });
 
         add(filterPanel, BorderLayout.NORTH);
@@ -53,8 +54,11 @@ public class PacketsPanel extends JPanel {
 
         packetTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                Capturer.selectedPacket = Capturer.packetList.get(packetTable.getSelectedRow());
-                System.out.println(Capturer.selectedPacket);
+                int index=(int)packetTable.getValueAt(packetTable.getSelectedRow(),0)-1;
+                System.out.println("==index=="+index);
+                Packet selectedPacket = Capturer.packetList.get(index);
+                System.out.println(selectedPacket);
+                ExtendPanel.analyze(selectedPacket);
             }
         });
         setPreferredSize(new Dimension(0, 250));

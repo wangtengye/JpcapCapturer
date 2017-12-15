@@ -18,7 +18,6 @@ public class Capturer {
     public static boolean openFromFile = false;
     public static NetworkInterface[] devices = JpcapCaptor.getDeviceList();
     static int total = 0;
-    public static Packet selectedPacket;
     public static List<Packet> packetList = new ArrayList<>();
 
     public static void init() {
