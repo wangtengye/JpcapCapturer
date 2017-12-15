@@ -52,15 +52,17 @@ public class CaptureThread extends Thread {
         int length = packet.len;
         if (packet instanceof ARPPacket) {
             ARPPacket arpPacket = (ARPPacket) packet;
-            src = arpPacket.getSenderProtocolAddress().toString();
-            dst = arpPacket.getTargetProtocolAddress().toString();
+            src = arpPacket.getSenderProtocolAddress().toString().substring(1);
+            dst = arpPacket.getTargetProtocolAddress().toString().substring(1);
             ARPAnalyzer.total++;
             type = "ARP";
         } else if (packet instanceof IPPacket) {
             IPPacket ipPacket = (IPPacket) packet;
             IPAnalyzer.judgeIPVersion(ipPacket);
-            src = ipPacket.src_ip.toString();
-            dst = ipPacket.dst_ip.toString();
+            if (ipPacket.src_ip != null)
+                src = ipPacket.src_ip.toString().substring(1);
+            if (ipPacket.dst_ip != null)
+                dst = ipPacket.dst_ip.toString().substring(1);
             if (packet instanceof TCPPacket) {
                 TCPAnalyzer.total++;
                 type = "TCP";
@@ -70,7 +72,7 @@ public class CaptureThread extends Thread {
             } else
                 type = "ICMP";
         }
-        tableModel.addRow(new Object[]{Capturer.total, src.substring(1), dst.substring(1), type, length});
+        tableModel.addRow(new Object[]{Capturer.total, src, dst, type, length});
 
     }
 
