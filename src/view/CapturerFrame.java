@@ -101,7 +101,7 @@ public class CapturerFrame extends JFrame implements ActionListener {
                 runningThread.stop();
             getContentPane().removeAll();
             PacketsPanel packetsPanel = new PacketsPanel();
-            getContentPane().add(packetsPanel,BorderLayout.NORTH);
+            getContentPane().add(packetsPanel, BorderLayout.NORTH);
             getContentPane().add(new ExtendPanel(), BorderLayout.CENTER);
             getContentPane().repaint();
             getContentPane().validate();
@@ -113,6 +113,8 @@ public class CapturerFrame extends JFrame implements ActionListener {
         } else if (e.getSource() == stopItem) {
             if (null != runningThread && runningThread.isAlive())
                 runningThread.stop();
+            if (Capturer.openFromFile)
+                Capturer.openFromFile = false;
         } else if (e.getSource() == saveFileItem) {
             JFileChooser chooser = new JFileChooser();
             chooser.showSaveDialog(this);
