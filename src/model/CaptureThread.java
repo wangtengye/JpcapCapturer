@@ -37,7 +37,7 @@ public class CaptureThread extends Thread {
     public void run() {
         if (Capturer.openFromFile) {
             Capturer.packetList.forEach(this::dealPacket);
-
+            Capturer.openFromFile = false;
         } else {
             while (true) {
                 captor.processPacket(-1, new Receiver());
