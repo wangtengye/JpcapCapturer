@@ -9,10 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 public class PacketsPanel extends JPanel {
     DefaultTableModel packetModel = null;
@@ -41,6 +38,16 @@ public class PacketsPanel extends JPanel {
         JButton button = new JButton("输入过滤条件过滤");
         filterPanel.add(filterText);
         filterPanel.add(button, BorderLayout.EAST);
+
+        filterText.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    sorter.setRowFilter(RowFilter.regexFilter(filterText.getText().toUpperCase()));
+                }
+            }
+        });
+
         button.addActionListener(e -> {
             sorter.setRowFilter(RowFilter.regexFilter(filterText.getText().toUpperCase()));
         });
@@ -54,8 +61,8 @@ public class PacketsPanel extends JPanel {
 
         packetTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                int index=(int)packetTable.getValueAt(packetTable.getSelectedRow(),0)-1;
-                System.out.println("==index=="+index);
+                int index = (int) packetTable.getValueAt(packetTable.getSelectedRow(), 0) - 1;
+                System.out.println("==index==" + index);
                 Packet selectedPacket = Capturer.packetList.get(index);
                 System.out.println(selectedPacket);
                 ExtendPanel.analyze(selectedPacket);
